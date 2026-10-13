@@ -258,7 +258,7 @@ class Program
         {
             Console.WriteLine("Zadal si príkaz exit - ukončuješ program -- Rád pomôžem aj nabudúce:)");
             
-        }
+        }//a
 
     }
 }
