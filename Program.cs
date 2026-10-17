@@ -38,6 +38,11 @@ class Program
         {
             Meranie_obdlznika();
         }
+        //prikaz array
+        else if (prikaz.ToLower() == "array")
+        {
+            Praca_s_polom();
+        }
         else
         {
                 Console.WriteLine("Vypísal si nesprávny údaj");
@@ -68,7 +73,7 @@ class Program
                 Console.WriteLine(Math.Sqrt(cislo));
             }
         }
-        //funkcia hladanie slova
+        //funkcia hladanie slova------------------------------------------------------------------------------------
         void Hladanie_slova()
         {
             Console.WriteLine("Zadaj vetu.");
@@ -78,11 +83,11 @@ class Program
             int pozicia = veta.IndexOf(slovo);
             if ( pozicia != -1)
             {
-                Console.WriteLine("Tvoje slovo ktoré si chcel nájsť sa nachádza:" + slovo);
+                Console.WriteLine("Tvoje slovo ktoré si chcel nájsť sa nachádza vo vete na pozícií " + pozicia);
             }
             else
             {
-                Console.WriteLine("Tvoje slovo ktoré si chcel nájsť sa nenachádza");
+                Console.WriteLine("Tvoje slovo ktoré si chcel nájsť sa nenachádza vo vete");
             }
             
         }
@@ -93,7 +98,7 @@ class Program
         }
         
         
-        //funkcia Meranie_obdlznika
+        //funkcia Meranie_obdlznika-----------------------------------------------------------------------------
         void Meranie_obdlznika()
         {
             Console.WriteLine("Ideme zmerať tvoj obdlžnik");
@@ -102,7 +107,7 @@ class Program
             Console.WriteLine("Zadaj velkost DRUHEJ strany");
             double strana2 = double.Parse(Console.ReadLine());
 
-            if ((strana1 == strana2) || (strana1 < 0) || (strana2 < 0)) 
+            if ((strana1 == strana2) || (strana1 <= 0) || (strana2 <= 0) ) 
             {
                 Console.WriteLine("Zadal si nesprávne údaje pre obdlznik");
             }
@@ -258,7 +263,146 @@ class Program
         {
             Console.WriteLine("Zadal si príkaz exit - ukončuješ program -- Rád pomôžem aj nabudúce:)");
             
-        }//aaa
+        }
+        //funkcia Praca_s_polom-----------------------------------------------------------------------------
+        void Praca_s_polom()
+        {
+            Console.WriteLine("Príkaz Array, zadaj pole čísiel a každé číslo oddeľ medzerou.");
+            string zadane_cisla = Console.ReadLine();
+            int pocetCisel = 1;
+            for (int i = 0; i < zadane_cisla.Length; i++) //spocitam kolko cisel tam je
+            {
+                if (zadane_cisla[i] == ' ')
+                {
+                    pocetCisel++;
+                }
+            }
+
+            // vytvorenie pola
+            int[] cisla = new int[pocetCisel];
+            string slovo = "";
+            int index = 0;
+
+            for (int i = 0; i < zadane_cisla.Length; i++)
+            {
+                if (zadane_cisla[i] != ' ')
+                {
+                    slovo += zadane_cisla[i]; // spajam cisla / cifry
+                }
+                else
+                {
+                    if (slovo != "")
+                    {
+                        cisla[index] = int.Parse(slovo); // ulozim poskladane cislo
+                        index++;
+                        slovo = ""; // uvolnenie priestoru pre spajanie dalsich cisliel
+                    }
+                }
+            }
+            if (slovo != "")
+            {
+                cisla[index] = int.Parse(slovo); //posledne cislo sa ulozi
+            }
+            
+            //while aby sa opakovalo stale dookola
+            while (true)
+            {
+                Console.WriteLine("Čo si praješ robiť s týmto poľom? ");
+                Console.WriteLine("Príkaz 'find' - nájde zadanú hodnotu v poli a napíše na akej pozícii sa nachádza" +
+                                      "Príkaz 'min' - nájde minimálnu hodnotu v poli" +
+                                      "Príkaz 'sort' - zoradí pole od najmenšej hodnoty, po najväčšiu" +
+                                      "Príkaz 'exit' - ukonci program");
+                string prikaz3 = Console.ReadLine();
+                    
+                //prikaz find cisla v poli
+                if (prikaz3.ToLower() == "find")
+                {
+                    Vyhladavanie_v_poli(cisla);
+                }
+                    
+                //prikaz minimalna hodnota
+                else if (prikaz3.ToLower() == "min")
+                {
+                    Urcenie_min_hodnoty(cisla);
+                }
+                    
+                //prikaz sorting
+                else if (prikaz3.ToLower() == "sort")
+                {
+                    Zoradenie_Pola(cisla);
+                }
+                    
+                //prikaz exit
+                else if (prikaz3.ToLower() == "exit")
+                {
+                    Ukoncenie();
+                    break;
+                }
+                else 
+                {
+                    Console.WriteLine("Zadal si nesprávny príkaz.");
+                } 
+            }
+            
+            
+
+            //funkcia hladanie cisla
+            void Vyhladavanie_v_poli(int[] cisla)
+            {
+                Console.WriteLine("Zadaj číslo, ktoré chceš nájsť.");
+                int hladane_cislo = int.Parse(Console.ReadLine());
+                
+                int pozicia = -1;
+
+                for (int i = 0; i < cisla.Length; i++)
+                {
+                    if(cisla[i] == hladane_cislo)
+                    {
+                        pozicia = i + 1;
+                        break;
+                    }
+                }
+
+                if (pozicia != -1)
+                {
+                        Console.WriteLine("Tvoje číslo " + hladane_cislo +
+                                          ", ktoré si chcel nájsť, sa nachádza v poli na pozícií " + pozicia);
+                }
+                else
+                {
+                        Console.WriteLine("Tvoje čislo " + hladane_cislo +
+                                          ", ktoré si chcel nájsť, sa nenachádza v poli.");
+                }
+            }
+            //funkcia minimalna hodnota
+            void Urcenie_min_hodnoty(int[] cisla)
+            {
+                int najmensie = cisla[0];
+                
+                for (int i = 0; i < cisla.Length; i++)
+                {
+                    if (cisla[i] < najmensie)
+                    {
+                        najmensie = cisla[i];
+                    }
+                }
+                Console.WriteLine("Najmensie cislo je: " + najmensie );
+            }
+            //funkcia minimalna hodnota
+            void Zoradenie_Pola(int[] cisla)
+            {
+                Array.Sort(cisla);
+                Console.Write("Pole je zoradené. Teraz to vyzerá takto: ");
+                for (int i = 0; i < cisla.Length; i++)
+                {
+                    Console.Write(cisla[i]+ " ");
+                }
+
+                Console.WriteLine();
+            }
+        }
+        
 
     }
+
 }
